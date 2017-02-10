@@ -4,7 +4,10 @@ import {
 } from 'react-native';
 
 import { Router, Scene } from 'react-native-router-flux';
+
 import Welcome from './components/Welcome';
+import Login from './components/Login';
+
 
 export default class App extends React.Component {
   render() {
@@ -15,6 +18,10 @@ export default class App extends React.Component {
             navigationBarStyle={{ backgroundColor: 'steelblue', borderBottomWidth: 0 }}
             component={Welcome}
             />
+            <Scene key='login'
+              navigationBarStyle={{ backgroundColor: 'steelblue', borderBottomWidth: 0 }}
+              component={Login}
+              />
         </Scene>
       </Router>
     );

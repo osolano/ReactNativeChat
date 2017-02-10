@@ -11,7 +11,10 @@ export default class App extends React.Component {
     return (
       <Router>
         <Scene key='root' style={{paddingTop: Platform.OS === 'ios' ? 64 : 54}}>
-          <Scene key='welcome' component={Welcome}/>
+          <Scene key='welcome'
+            navigationBarStyle={{ backgroundColor: 'steelblue', borderBottomWidth: 0 }}
+            component={Welcome}
+            />
         </Scene>
       </Router>
     );

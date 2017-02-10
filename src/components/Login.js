@@ -29,7 +29,7 @@ export default class Login extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            //Actions.chat();
+            Actions.onlineUsersList();
           }}
         >
           <Text style={styles.label3}>

@@ -7,7 +7,7 @@ import { Router, Scene } from 'react-native-router-flux';
 
 import Welcome from './components/Welcome';
 import Login from './components/Login';
-
+import OnlineUsersList from './components/OnlineUsersList';
 
 export default class App extends React.Component {
   render() {
@@ -22,6 +22,10 @@ export default class App extends React.Component {
               navigationBarStyle={{ backgroundColor: 'steelblue', borderBottomWidth: 0 }}
               component={Login}
               />
+              <Scene key='onlineUsersList'
+                component={OnlineUsersList}
+                title='Online'
+                />
         </Scene>
       </Router>
     );

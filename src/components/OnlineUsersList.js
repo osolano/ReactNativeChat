@@ -24,21 +24,6 @@ export default class OnlineUsersList extends React.Component {
         };
     }
 
-    componentDidMount() {
-        console.log('mounting');
-        console.log()
-        /*
-        this.getTheData(function(data) {
-            usersOnline = data;
-            console.log('usersonline', usersOnline);
-            this.setState = ({
-                dataSource:this.state.dataSource.cloneWithRows(this.props.onlineUsers),
-                isLoading:false
-            })
-        }.bind(this));
-        */
-    }
-
     getTheData(callback) {
         console.log('Get the Data');
         Backend.listOfUsersOnline((response) => {
@@ -73,7 +58,6 @@ export default class OnlineUsersList extends React.Component {
             </View>
         );
     }
-
 
 }
 

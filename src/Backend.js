@@ -4,6 +4,7 @@ class Backend {
     uuid = '';
     usersOnline = null;
     pubnub = null;
+    channel = 'global1'
 
     constructor() {
         console.log('Pubnub constructor');
@@ -18,50 +19,93 @@ class Backend {
 
         console.log('ID', pubnub.getUUID());
         pubnub.subscribe({
-            channels: ['global'],
+            channels: [this.channel],
             withPrescense: true
         });
 
-        pubnub.addListener({
-            message: function(message){
-                console.log('Listener Message', message);
-            }
-        });
+
 
     }
 
-    sendMessage(message) {
+    listenToChannelEvents(callback) {
+        pubnub.addListener({
+            message: function(message){
+                console.log('Listener Message', message);
+                callback(message);
+            }
+        });
+    }
+
+    sendMessage(message, toUser) {
         console.log('Try sending a message');
-        pubnub.publish(
-            {
-                message: {
-                    text: message
+
+        for (let i = 0; i < message.length; i++) {
+            pubnub.publish(
+                {
+                    message: {
+                        _id: Math.round(Math.random() * 1000000),
+                        to: toUser,
+                        text: message[i].text,
+                        createdAt: new Date().valueOf(),
+                        user: message[i].user
+                    },
+                    channel: this.channel,
                 },
-                channel: 'global',
+                function (status, response) {
+                    if (status.error) {
+                        // handle error
+                        console.log(status)
+                    } else {
+                        console.log("message Published w/ timetoken", response.timetoken)
+                    }
+                }
+            );
+            // this.messagesRef.push({
+            //     text: message[i].text,
+            //     user: message[i].user,
+            //     createdAt: firebase.database.ServerValue.TIMESTAMP,
+            // });
+        }
+
+
+    }
+
+    loadMessages(callback) {
+        console.log('load messages');
+
+        pubnub.history(
+            {
+                channel: this.channel,
+                reverse: true, // Setting to true will traverse the time line in reverse starting with the oldest message first.
+                count: 100, // how many items to fetch
             },
             function (status, response) {
-                if (status.error) {
-                    // handle error
-                    console.log(status)
-                } else {
-                    console.log("message Published w/ timetoken", response.timetoken)
-                }
+                console.log(response);
+                callback(response);
+
             }
         );
+
     }
 
     listOfUsersOnline(callback) {
         console.log('LIST ID', pubnub.getUUID());
         pubnub.hereNow(
             {
-                channels: ['global'],
+                channels: [this.channel],
                 includeState: true
             },
-            function(status, response){
-                callback({
-                    occupants: response.channels.global.occupants,
-                    totalOccupants: response.channels.global.occupancy
-                });
+            (status, response) => {
+                console.log(response);
+                console.log(this.channel);
+                console.log(response.channels.hasOwnProperty(this.channel));
+                if (response.channels.hasOwnProperty(this.channel)) {
+
+                    callback({
+                        occupants: response.channels[this.channel].occupants,
+                        totalOccupants: response.channels[this.channel].occupancy
+                    });
+                }
             }
         );
     }

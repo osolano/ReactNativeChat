@@ -36,7 +36,10 @@ export default class OnlineUsersList extends React.Component {
         return (
             <TouchableHighlight
             onPress={() => {
-                    Actions.chat({title: rowData.uuid});
+                    Actions.chat({
+                        title: rowData.uuid,
+                        user: rowData.uuid
+                    });
                 }}
             underlayColor='#dddddd'
             style={{height:44}}>

@@ -8,6 +8,7 @@ import { Router, Scene } from 'react-native-router-flux';
 import Welcome from './components/Welcome';
 import Login from './components/Login';
 import OnlineUsersList from './components/OnlineUsersList';
+import Chat from './components/Chat';
 
 export default class App extends React.Component {
   render() {
@@ -26,6 +27,10 @@ export default class App extends React.Component {
                 component={OnlineUsersList}
                 title='Online'
                 />
+                <Scene key='chat'
+                  component={Chat}
+                  title='Chat'
+                  />
         </Scene>
       </Router>
     );

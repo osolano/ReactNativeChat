@@ -49,7 +49,12 @@ export default class OnlineUsersList extends React.Component {
     renderRow(rowData, sectionID, rowID) {
         console.log('RenderRow');
         return (
-            <TouchableHighlight underlayColor='#dddddd' style={{height:44}}>
+            <TouchableHighlight
+            onPress={() => {
+                    Actions.chat({title: rowData.uuid});
+                }}
+            underlayColor='#dddddd'
+            style={{height:44}}>
             <View>
             <Text style={{fontSize: 20, color: '#000000'}} numberOfLines={1}>{rowData.uuid}</Text>
             <View style={{height: 1, backgroundColor: '#dddddd'}}/>

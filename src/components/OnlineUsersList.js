@@ -4,50 +4,70 @@ import {
     StyleSheet,
     Text,
     View,
-    ListView
+    ListView,
+    TouchableHighlight
 } from 'react-native';
 
 import Backend from '../Backend';
-
-
 import { Actions } from 'react-native-router-flux';
 
+var onlineUsers = [];
 export default class OnlineUsersList extends React.Component {
     state = {
         name: '',
     };
 
-    constructor() {
-        super();
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    constructor(props) {
+        super(props);
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+            dataSource: ds.cloneWithRows(['a','b']),
+            isLoading: false
         };
     }
 
-    render() {
+    componentDidMount() {
+        this.getTheData(function(data) {
+            usersOnline = data;
+            console.log('usersonline', usersOnline);
+            this.setState = ({
+                dataSource:this.state.dataSource.cloneWithRows(['c','d','f','g']),
+                isLoading:true
+            })
+        }.bind(this));
+    }
+
+    getTheData(callback) {
+        console.log('Get the Data');
+        Backend.listOfUsersOnline((response) => {
+            callback(response.occupants);
+        });
+    }
+
+    renderRow(rowData, sectionID, rowID) {
+        console.log('RenderRow');
         return (
-            <ListView
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) => <Text>{rowData}</Text>}
-            />
+            <TouchableHighlight underlayColor='#dddddd' style={{height:44}}>
+            <View>
+            <Text style={{fontSize: 20, color: '#000000'}} numberOfLines={1}>{rowData}</Text>
+            <View style={{height: 1, backgroundColor: '#dddddd'}}/>
+            </View>
+            </TouchableHighlight>
         );
     }
 
-    componentDidMount() {
-        Backend.sendMessage('HELLO');
-        Backend.listOfUsersOnline();
-        //Backend.listOfUsersOnline();
-        /*
-        Backend.loadMessages((message) => {
-            this.setState((previousState) => {
-                return {
-                    messages: GiftedChat.append(previousState.messages, message),
-                };
-            });
-        });
-        */
+
+    render() {
+        var currentView = (this.state.isLoading)?<View/>:<ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true}/>
+
+        return(
+            <View>
+            {currentView}
+            </View>
+        );
     }
+
+
 }
 
 const styles = StyleSheet.create({

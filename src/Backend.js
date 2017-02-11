@@ -49,7 +49,7 @@ class Backend {
         );
     }
 
-    listOfUsersOnline() {
+    listOfUsersOnline(callback) {
         console.log('LIST ID', pubnub.getUUID());
         pubnub.hereNow(
             {
@@ -57,13 +57,14 @@ class Backend {
                 includeState: true
             },
             function(status, response){
-                console.log('Pubnub', pubnub);
-                console.log('Status', status);
-                console.log('List Of Users Response', response);
+                callback({
+                    occupants: response.channels.global.occupants,
+                    totalOccupants: response.channels.global.occupancy
+                });
             }
         );
     }
-    
+
 }
 /*
 // retrieve the messages from the Backend

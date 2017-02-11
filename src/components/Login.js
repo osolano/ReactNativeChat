@@ -32,15 +32,18 @@ export default class Login extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-              Backend.listOfUsersOnline((response) => {
-                  console.log('push view');
-                  console.log('BACKEND UUID', Backend.uuid);
-                  let onlineUsers = response.occupants.filter(user => user.uuid !== Backend.uuid);
-                  Actions.onlineUsersList({
-                    name: this.state.name,
-                    onlineUsers: onlineUsers
+              if (this.state.name.length > 0) {
+                  Backend.pubnubSetup(this.state.name);
+
+                  Backend.listOfUsersOnline((response) => {
+                      console.log('BACKEND UUID', Backend.uuid);
+                      let onlineUsers = response.occupants.filter(user => user.uuid !== Backend.uuid);
+                      Actions.onlineUsersList({
+                        name: this.state.name,
+                        onlineUsers: onlineUsers
+                      });
                   });
-              });
+          }
 
           }}
         >

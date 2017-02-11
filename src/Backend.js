@@ -6,34 +6,43 @@ class Backend {
     pubnub = null;
     channel = 'global1'
 
+    channelEventListener = null;
+
     constructor() {
         console.log('Pubnub constructor');
 
         pubnub = new PubNub({
             subscribeKey: 'sub-c-a8e24fb2-ef3b-11e6-b753-0619f8945a4f',
             publishKey: 'pub-c-daf7877d-2242-4a2a-b3be-c22c1d5e1a3d',
-            uuid: 'computer user'
         });
 
-        this.uuid = 'computer user'
+    }
 
-        console.log('ID', pubnub.getUUID());
+    pubnubSetup(name) {
+        this.setUUID(name);
+
         pubnub.subscribe({
             channels: [this.channel],
             withPrescense: true
         });
+    }
 
-
-
+    setUUID(name) {
+        pubnub.setUUID(name);
+        this.uuid = name;
     }
 
     listenToChannelEvents(callback) {
-        pubnub.addListener({
+        thischannelEventListener = pubnub.addListener({
             message: function(message){
                 console.log('Listener Message', message);
                 callback(message);
             }
         });
+    }
+
+    stopListeningToChannelEvents(callback) {
+        pubnub.removeListener(thischannelEventListener);
     }
 
     sendMessage(message, toUser) {
@@ -60,14 +69,7 @@ class Backend {
                     }
                 }
             );
-            // this.messagesRef.push({
-            //     text: message[i].text,
-            //     user: message[i].user,
-            //     createdAt: firebase.database.ServerValue.TIMESTAMP,
-            // });
         }
-
-
     }
 
     loadMessages(callback) {
@@ -82,7 +84,6 @@ class Backend {
             function (status, response) {
                 console.log(response);
                 callback(response);
-
             }
         );
 
@@ -111,4 +112,6 @@ class Backend {
     }
 
 }
+
+
 export default new Backend();

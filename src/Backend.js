@@ -5,8 +5,7 @@ class Backend {
     usersOnline = null;
     pubnub = null;
     channel = 'global1'
-
-    channelEventListener = null;
+    listener = null;
 
     constructor() {
         console.log('Pubnub constructor');
@@ -32,17 +31,56 @@ class Backend {
         this.uuid = name;
     }
 
-    listenToChannelEvents(callback) {
-        thischannelEventListener = pubnub.addListener({
+    listenToMessageEvents(callback) {
+        pubnub.addListener({
             message: function(message){
-                console.log('Listener Message', message);
+                console.log('Message Listener', message);
                 callback(message);
             }
         });
     }
 
-    stopListeningToChannelEvents(callback) {
-        pubnub.removeListener(thischannelEventListener);
+    listenToPresenceEvents(callback) {
+        pubnub.addListener({
+            status: function(statusEvent){
+                if (statusEvent.category === "PNConnectedCategory") {
+                    var newState = {
+                        name: this.uuid,
+                        timestamp: new Date()
+                    };
+                    pubnub.setState(
+                        {
+                            channels: [this.channel],
+                            state: newState
+                        }
+                    );
+                }
+            },
+            presence: function(p){
+                console.log('Presence Listener', p);
+                callback(p);
+
+                // var action = p.action; // Can be join, leave, state-change or timeout
+                // var channelName = p.channel; // The channel for which the message belongs
+                // var occupancy = p.occupancy; // No. of users connected with the channel
+                // var state = p.state; // User State
+                // var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
+                // var publishTime = p.timestamp; // Publish timetoken
+                // var timetoken = p.timetoken;  // Current timetoken
+                // var uuid = p.uuid; // UUIDs of users who are connected with the channel
+            }
+        });
+
+        pubnub.subscribe({
+            channels: [this.channel],
+            withPresence: true
+        });
+    }
+
+
+    stopListener(listener) {
+        //console.log('STOP LISTENER',)
+        pubnub.removeListener(this.listener);
     }
 
     sendMessage(message, toUser) {

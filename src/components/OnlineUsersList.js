@@ -24,6 +24,53 @@ export default class OnlineUsersList extends React.Component {
         };
     }
 
+    componentDidMount() {
+        console.log('ONLINE LIST DID MOUNT');
+        Backend.listenToPresenceEvents((response) => {
+            //console.log('ONLINE PRESENCE RESPONSE', response);
+            Backend.listOfUsersOnline((users) => {
+                console.log('BACKEND UUID', Backend.uuid);
+                let newUsers = users.occupants.filter(user => user.uuid !== Backend.uuid);
+                this.setState({
+                  dataSource: this.state.dataSource.cloneWithRows(newUsers),
+                });
+            });
+            /*
+            if (response.action == 'join') {
+                console.log('join');
+
+                let duplicateUsers =  this.props.onlineUsers.filter(user => user.uuid == response.uuid );
+                console.log('Count', duplicateUsers);
+                console.log('old users', this.props.onlineUsers);
+
+                if (duplicateUsers === undefined) {
+                    console.log('undefined');
+                    let newUsers = this.props.onlineUsers.push({
+                        uuid: response.uuid
+                    });
+                    console.log('new users', newUsers);
+                    this.setState({
+                      dataSource: this.state.dataSource.cloneWithRows(newUsers),
+                    });
+                }
+            } else if (response.action == 'timeout') {
+                let lessUsers =  this.props.onlineUsers.filter(user => user.uuid != response.uuid );
+
+                this.setState({
+                  dataSource: this.state.dataSource.cloneWithRows(lessUsers),
+                });
+            } else if (response.action == 'leave') {
+                let lessUsers =  this.props.onlineUsers.filter(user => user.uuid != response.uuid );
+
+                this.setState({
+                  dataSource: this.state.dataSource.cloneWithRows(lessUsers),
+                });
+            }
+            */
+
+        });
+    }
+
     getTheData(callback) {
         console.log('Get the Data');
         Backend.listOfUsersOnline((response) => {
@@ -53,7 +100,8 @@ export default class OnlineUsersList extends React.Component {
 
 
     render() {
-        var currentView = (this.state.isLoading)?<View/>:<ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true}/>
+        this.renderRow = this.renderRow.bind(this)
+        var currentView = (this.state.isLoading)?<View/>:<ListView dataSource={this.state.dataSource} renderRow={this.renderRow} enableEmptySections={true}/>
 
         return(
             <View>

@@ -3,11 +3,11 @@ import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import Backend from '../Backend';
 
-
+var listener = null;
 export default class Chat extends React.Component {
     state = {
         messages: [],
-        user: ''
+        user: '',
     };
 
     render() {
@@ -31,7 +31,7 @@ export default class Chat extends React.Component {
             var messageHistory = response.messages.map(function(message) {
                 return message.entry;
             });
-            messageHistory = messageHistory.filter(message => 
+            messageHistory = messageHistory.filter(message =>
                 message.hasOwnProperty('_id') &&
                 ((message.to == this.props.user && message.user.name == Backend.uuid) ||
                 (message.to == Backend.uuid && message.user.name == this.props.user))
@@ -54,8 +54,8 @@ export default class Chat extends React.Component {
     componentDidMount() {
         //Backend.
         this.loadMessageHistory();
-
-        Backend.listenToChannelEvents((response) => {
+        console.log(Backend.listener);
+        listener = Backend.listenToMessageEvents((response) => {
             console.log('Channel Event', response);
             this.setState((previousState) => {
                 return {
@@ -65,9 +65,11 @@ export default class Chat extends React.Component {
         })
     }
 
-
     componentWillUnmount() {
-        //Backend.closeChat();
+        console.log('will unmount');
+        // We need to handle this listener when we leave a chat.
+        console.log(listener);
+        //this.removeListener(listener);
     }
 
 }

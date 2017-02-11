@@ -1,33 +1,40 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+
+import { GiftedChat } from 'react-native-gifted-chat';
+import Backend from '../Backend';
 
 
 export default class Chat extends React.Component {
+    state = {
+      messages: [],
+    };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={[styles.label1]}>
-          Chat
-        </Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+          <GiftedChat
+            messages={this.state.messages}
+            onSend={(message) => {
+              Backend.sendMessage(message);
+            }}
+            user={{
+              _id: Backend.uuid,
+              name: this.props.name,
+            }}
+          />
+        );
+      }
+/*
+      componentDidMount() {
+        Backend.loadMessages((message) => {
+          this.setState((previousState) => {
+            return {
+              messages: GiftedChat.append(previousState.messages, message),
+            };
+          });
+        });
+      }
+      componentWillUnmount() {
+        Backend.closeChat();
+      }
+    */
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'steelblue',
-  },
-  label1: {
-    fontSize: 20,
-    marginTop: 120,
-    color: 'white',
-  },
-});

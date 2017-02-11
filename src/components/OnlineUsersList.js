@@ -11,30 +11,32 @@ import {
 import Backend from '../Backend';
 import { Actions } from 'react-native-router-flux';
 
-var onlineUsers = [];
 export default class OnlineUsersList extends React.Component {
-    state = {
-        name: '',
-    };
 
     constructor(props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['a','b']),
-            isLoading: false
+            dataSource: ds.cloneWithRows(this.props.onlineUsers),
+            isLoading: false,
+            name: '',
+            onlineUsers: []
         };
     }
 
     componentDidMount() {
+        console.log('mounting');
+        console.log()
+        /*
         this.getTheData(function(data) {
             usersOnline = data;
             console.log('usersonline', usersOnline);
             this.setState = ({
-                dataSource:this.state.dataSource.cloneWithRows(['c','d','f','g']),
-                isLoading:true
+                dataSource:this.state.dataSource.cloneWithRows(this.props.onlineUsers),
+                isLoading:false
             })
         }.bind(this));
+        */
     }
 
     getTheData(callback) {
@@ -49,7 +51,7 @@ export default class OnlineUsersList extends React.Component {
         return (
             <TouchableHighlight underlayColor='#dddddd' style={{height:44}}>
             <View>
-            <Text style={{fontSize: 20, color: '#000000'}} numberOfLines={1}>{rowData}</Text>
+            <Text style={{fontSize: 20, color: '#000000'}} numberOfLines={1}>{rowData.uuid}</Text>
             <View style={{height: 1, backgroundColor: '#dddddd'}}/>
             </View>
             </TouchableHighlight>
@@ -77,8 +79,8 @@ const styles = StyleSheet.create({
     },
     label3: {
         fontSize: 20,
-        color: 'white',
-        marginTop: 20,
+        color: 'black',
+        marginTop: 80,
     },
 
 });

@@ -4,7 +4,7 @@ class Backend {
     uuid = '';
     usersOnline = null;
     pubnub = null;
-    // initialize Firebase Backend
+    
     constructor() {
         console.log('Pubnub constructor');
 
@@ -13,6 +13,8 @@ class Backend {
             publishKey: 'pub-c-daf7877d-2242-4a2a-b3be-c22c1d5e1a3d',
             uuid: 'computer user'
         });
+
+        this.uuid = 'computer user'
 
         console.log('ID', pubnub.getUUID());
         pubnub.subscribe({

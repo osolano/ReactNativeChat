@@ -1,10 +1,10 @@
 import React from 'react';
+
 import {
   TouchableOpacity
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
-
 import { Container, Content, Button, Text} from 'native-base';
 
 export default class Welcome extends React.Component {

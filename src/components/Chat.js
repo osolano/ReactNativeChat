@@ -1,7 +1,7 @@
 import React from 'react';
+import Backend from '../Backend';
 
 import { GiftedChat } from 'react-native-gifted-chat';
-import Backend from '../Backend';
 
 var listener = null;
 export default class Chat extends React.Component {
@@ -27,7 +27,6 @@ export default class Chat extends React.Component {
 
     loadMessageHistory() {
         Backend.loadMessages((response) => {
-            //var messageHistory = response.messages.filter(message => message.entry.to === this.props.user && message.entry.from === Backend.uuid);
             var messageHistory = response.messages.map(function(message) {
                 return message.entry;
             });
@@ -37,11 +36,6 @@ export default class Chat extends React.Component {
                 (message.to == Backend.uuid && message.user.name == this.props.user))
              );
             messageHistory = messageHistory.reverse();
-            for (let message of messageHistory) {
-                console.log(message.text);
-            }
-
-            console.log('Message History', messageHistory);
 
             this.setState((previousState) => {
                 return {
@@ -52,11 +46,8 @@ export default class Chat extends React.Component {
     }
 
     componentDidMount() {
-        //Backend.
         this.loadMessageHistory();
-        console.log(Backend.listener);
         listener = Backend.listenToMessageEvents((response) => {
-            console.log('Channel Event', response);
             this.setState((previousState) => {
                 return {
                     messages: GiftedChat.append(previousState.messages, response.message),
@@ -67,9 +58,7 @@ export default class Chat extends React.Component {
 
     componentWillUnmount() {
         console.log('will unmount');
-        // We need to handle this listener when we leave a chat.
         console.log(listener);
-        //this.removeListener(listener);
     }
 
 }

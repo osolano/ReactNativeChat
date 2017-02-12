@@ -64,12 +64,7 @@ export default class OnlineUsersList extends React.Component {
         );
     }
 
-
     render() {
-        //this.renderRow = this.renderRow.bind(this)
-        //var currentView = (this.state.isLoading)?<View/> :
-
-
         return(
             <View>
             <ListView

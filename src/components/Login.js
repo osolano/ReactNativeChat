@@ -1,4 +1,6 @@
 import React from 'react';
+import Backend from '../Backend';
+
 import {
   StyleSheet,
   Text,
@@ -6,9 +8,7 @@ import {
 } from 'react-native';
 
 import { Container, Content, Button } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-import Backend from '../Backend';
 
 export default class Login extends React.Component {
     state = {

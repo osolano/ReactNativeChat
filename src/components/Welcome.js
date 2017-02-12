@@ -13,19 +13,21 @@ export default class Welcome extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[styles.label1]}>
+
+
+        <Text style={[styles.label2]}>
           Welcome to
         </Text>
-        <Text style={[styles.label2]}>
-          Chat
-        </Text>
 
+        <Text style={[styles.label3]}>
+         Chat
+        </Text>
         <TouchableOpacity
           onPress={() => {
             Actions.login();
           }}
         >
-          <Text style={styles.label3}>
+          <Text style={styles.label4}>
             Get Started!
           </Text>
         </TouchableOpacity>
@@ -43,17 +45,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'steelblue',
   },
   label1: {
-    fontSize: 20,
-    marginTop: 120,
+    fontSize: 60,
+    marginTop: 20,
     color: 'white',
   },
   label2: {
-    fontSize: 60,
+    fontSize: 30,
+    marginTop: 60,
     color: 'white',
   },
   label3: {
-    fontSize: 20,
+    fontSize: 80,
     color: 'white',
-    marginTop: 20,
+    marginTop: 10,
+  },
+  label4: {
+    fontSize: 30,
+    color: 'white',
+    marginTop: 60,
   },
 });

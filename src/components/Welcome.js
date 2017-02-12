@@ -1,39 +1,30 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
   TouchableOpacity
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
+import { Container, Content, Button, Text, Footer, FooterTab, Left, Right, Body, Icon } from 'native-base';
+
 export default class Welcome extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-
-
-        <Text style={[styles.label2]}>
-          Welcome to
-        </Text>
-
-        <Text style={[styles.label3]}>
-         Chat
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            Actions.login();
-          }}
-        >
-          <Text style={styles.label4}>
-            Get Started!
-          </Text>
-        </TouchableOpacity>
-
-
-      </View>
+        <Container style={{backgroundColor: 'steelblue', alignItems: 'center'}}>
+             <Content>
+             <Text style={{fontSize: 30, color: 'white', marginTop: 70}}>Welcome to</Text>
+             <Text style={{fontSize: 80, color: 'white'}}>Chat</Text>
+             </Content>
+             <Footer>
+             <FooterTab>
+                 <Button full large onPress={() => Actions.login()}>
+                     <Text style={{color: 'steelblue'}}>Get Started! ✋</Text>
+                 </Button>
+             </FooterTab>
+         </Footer>
+         </Container>
     );
   }
 }
@@ -59,9 +50,8 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 10,
   },
-  label4: {
+  button: {
     fontSize: 30,
-    color: 'white',
-    marginTop: 60,
+    color: 'white'
   },
 });

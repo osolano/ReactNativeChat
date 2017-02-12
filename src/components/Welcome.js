@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet,
   TouchableOpacity
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
-import { Container, Content, Button, Text, Footer, FooterTab, Left, Right, Body, Icon } from 'native-base';
+import { Container, Content, Button, Text} from 'native-base';
 
 export default class Welcome extends React.Component {
 
@@ -14,44 +13,13 @@ export default class Welcome extends React.Component {
     return (
         <Container style={{backgroundColor: 'steelblue', alignItems: 'center'}}>
              <Content>
-             <Text style={{fontSize: 30, color: 'white', marginTop: 70}}>Welcome to</Text>
-             <Text style={{fontSize: 80, color: 'white'}}>Chat</Text>
-             </Content>
-             <Footer>
-             <FooterTab>
-                 <Button full large onPress={() => Actions.login()}>
-                     <Text style={{color: 'steelblue'}}>Get Started! ✋</Text>
+                 <Text style={{fontSize: 20, color: 'white', marginTop: 60, textAlign: 'center'}}>Welcome to</Text>
+                 <Text style={{fontSize: 80, color: 'white', textAlign: 'center'}}>Chat</Text>
+                 <Button style={{marginTop: 20, marginLeft: 20, marginRight: 20}} success block large onPress={() => Actions.login()}>
+                     <Text style={{color: 'white'}}>Get Started!</Text>
                  </Button>
-             </FooterTab>
-         </Footer>
+             </Content>
          </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'steelblue',
-  },
-  label1: {
-    fontSize: 60,
-    marginTop: 20,
-    color: 'white',
-  },
-  label2: {
-    fontSize: 30,
-    marginTop: 60,
-    color: 'white',
-  },
-  label3: {
-    fontSize: 80,
-    color: 'white',
-    marginTop: 10,
-  },
-  button: {
-    fontSize: 30,
-    color: 'white'
-  },
-});

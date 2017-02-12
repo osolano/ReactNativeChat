@@ -22,6 +22,7 @@ export default class App extends React.Component {
             <Scene key='login'
               navigationBarStyle={{ backgroundColor: 'steelblue', borderBottomWidth: 0 }}
               component={Login}
+              hideBackImage={true}
               />
               <Scene key='onlineUsersList'
                 component={OnlineUsersList}

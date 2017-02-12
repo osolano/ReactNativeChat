@@ -1,4 +1,5 @@
 import React from 'react';
+import Backend from '../Backend';
 
 import {
     StyleSheet,
@@ -8,7 +9,6 @@ import {
     TouchableHighlight
 } from 'react-native';
 
-import Backend from '../Backend';
 import { Actions } from 'react-native-router-flux';
 
 export default class OnlineUsersList extends React.Component {
@@ -25,11 +25,8 @@ export default class OnlineUsersList extends React.Component {
     }
 
     componentDidMount() {
-        console.log('ONLINE LIST DID MOUNT');
         Backend.listenToPresenceEvents((response) => {
-            //console.log('ONLINE PRESENCE RESPONSE', response);
             Backend.listOfUsersOnline((users) => {
-                console.log('BACKEND UUID', Backend.uuid);
                 let newUsers = users.occupants.filter(user => user.uuid !== Backend.uuid);
                 this.setState({
                   dataSource: this.state.dataSource.cloneWithRows(newUsers),
@@ -39,15 +36,17 @@ export default class OnlineUsersList extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        Backend.unsubscribe();
+    }
+
     getTheData(callback) {
-        console.log('Get the Data');
         Backend.listOfUsersOnline((response) => {
             callback(response.occupants);
         });
     }
 
     renderRow(rowData, sectionID, rowID) {
-        console.log('RenderRow');
         return (
             <TouchableHighlight
             onPress={() => {
@@ -58,9 +57,8 @@ export default class OnlineUsersList extends React.Component {
                 }}
             underlayColor='#dddddd'
             style={{height:44}}>
-            <View>
-            <Text style={{fontSize: 20, color: '#000000'}} numberOfLines={1}>{rowData.uuid}</Text>
-            <View style={{height: 1, backgroundColor: '#dddddd'}}/>
+            <View style={styles.row}>
+            <Text style={{fontSize: 20, color: '#000000', marginLeft: 12}} numberOfLines={1}>{rowData.uuid}</Text>
             </View>
             </TouchableHighlight>
         );
@@ -68,12 +66,18 @@ export default class OnlineUsersList extends React.Component {
 
 
     render() {
-        this.renderRow = this.renderRow.bind(this)
-        var currentView = (this.state.isLoading)?<View/>:<ListView dataSource={this.state.dataSource} renderRow={this.renderRow} enableEmptySections={true}/>
+        //this.renderRow = this.renderRow.bind(this)
+        //var currentView = (this.state.isLoading)?<View/> :
+
 
         return(
             <View>
-            {currentView}
+            <ListView
+                dataSource={this.state.dataSource}
+                renderRow={this.renderRow}
+                enableEmptySections={true}
+                renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+                />
             </View>
         );
     }
@@ -81,14 +85,15 @@ export default class OnlineUsersList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    separator: {
+       flex: 1,
+       height: StyleSheet.hairlineWidth,
+       backgroundColor: '#8E8E8E',
+    },
+    row: {
         flex: 1,
+        padding: 12,
+        flexDirection: 'row',
         alignItems: 'center',
-    },
-    label3: {
-        fontSize: 20,
-        color: 'black',
-        marginTop: 80,
-    },
-
+    }
 });

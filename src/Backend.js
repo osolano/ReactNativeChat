@@ -77,6 +77,9 @@ class Backend {
         });
     }
 
+    unsubscribe() {
+        pubnub.unsubscribeAll();
+    }
 
     stopListener(listener) {
         //console.log('STOP LISTENER',)

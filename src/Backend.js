@@ -29,12 +29,20 @@ class Backend {
     }
 
     listenToMessageEvents(callback) {
-        pubnub.addListener({
-            message: function(message){
-                console.log('Message Listener', message);
-                callback(message);
-            }
-        });
+      var messageListener = {
+        message: function(message){
+            console.log('Message Listener', message);
+            callback(message);
+        }
+      }
+
+      pubnub.addListener(messageListener);
+      return messageListener;
+    }
+
+    removeMessageListener(listener) {
+      pubnub.removeListener(listener);
+      console.log('Did Remove Listener');
     }
 
     listenToPresenceEvents(callback) {

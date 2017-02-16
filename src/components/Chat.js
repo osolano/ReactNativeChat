@@ -3,8 +3,8 @@ import Backend from '../Backend';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 
-var listener = null;
 export default class Chat extends React.Component {
+
     state = {
         messages: [],
         user: '',
@@ -25,6 +25,19 @@ export default class Chat extends React.Component {
         );
     }
 
+    componentDidMount() {
+        this.loadMessageHistory();
+
+        this.listener = Backend.listenToMessageEvents((response) => {
+            this.setState((previousState) => {
+                return {
+                    messages: GiftedChat.append(previousState.messages, response.message),
+                };
+            });
+        })
+        console.log('listener', this.listener);
+    }
+
     loadMessageHistory() {
         Backend.loadMessages((response) => {
             var messageHistory = response.messages.map(function(message) {
@@ -35,6 +48,7 @@ export default class Chat extends React.Component {
                 ((message.to == this.props.user && message.user.name == Backend.uuid) ||
                 (message.to == Backend.uuid && message.user.name == this.props.user))
              );
+
             messageHistory = messageHistory.reverse();
 
             this.setState((previousState) => {
@@ -45,20 +59,12 @@ export default class Chat extends React.Component {
         });
     }
 
-    componentDidMount() {
-        this.loadMessageHistory();
-        listener = Backend.listenToMessageEvents((response) => {
-            this.setState((previousState) => {
-                return {
-                    messages: GiftedChat.append(previousState.messages, response.message),
-                };
-            });
-        })
-    }
+
 
     componentWillUnmount() {
         console.log('will unmount');
-        console.log(listener);
+        console.log(this.listener);
+        Backend.removeMessageListener(this.listener);
     }
 
 }

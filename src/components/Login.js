@@ -22,7 +22,7 @@ export default class Login extends React.Component {
         <Container style={{backgroundColor: 'steelblue'}}>
             <Content>
                 <TextInput placeholder='Username' style={styles.usernameInput} placeholderTextColor='mintcream'
-                  onChangeText={(text) => { this.setState({ username: text }); }}
+                  onChangeText={(text) => { this.setState({ username: text.trim() }); }}
                   value={this.state.name}
                   autoCapitalize='none'
                   autoCorrect={false}

@@ -12,15 +12,20 @@ import { Actions } from 'react-native-router-flux';
 
 export default class Login extends React.Component {
     state = {
-      name: '',
+      username: '',
+      password: ''
     };
 
   render() {
     return (
         <Container style={{backgroundColor: 'steelblue'}}>
             <Content>
-                <TextInput placeholder='Type your username...' style={styles.textInput} placeholderTextColor='mintcream'
-                onChangeText={(text) => { this.setState({ name: text }); }}
+                <TextInput placeholder='Username' style={styles.textInput} placeholderTextColor='mintcream'
+                onChangeText={(text) => { this.setState({ username: text }); }}
+                value={this.state.name}
+                />
+                <TextInput placeholder='Password' style={styles.textInput} placeholderTextColor='mintcream'
+                onChangeText={(text) => { this.setState({ password: text }); }}
                 value={this.state.name}
                 />
 

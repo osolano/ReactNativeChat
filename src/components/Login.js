@@ -96,15 +96,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 34,
     textAlign: 'center',
-    height: 100,
+    height: 60,
     flex: 1
   },
   passwordInput: {
-    marginTop: 10,
     color: 'white',
     fontSize: 34,
     textAlign: 'center',
-    height: 100,
+    height: 60,
     flex: 1
   },
 

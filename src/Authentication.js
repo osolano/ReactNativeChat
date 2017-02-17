@@ -1,4 +1,8 @@
 class Authentication {
+  constructor(props) {
+    super(props);
+    this.auth_token = '';
+  }
 
   hello() {
     console.log('hello');
